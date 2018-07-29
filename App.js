@@ -11,7 +11,7 @@ import {
 
 import data from './src/data/data'
 // import {setWallpaper} from 'react-native-wallpaper-manager'
-
+import FastImage from 'react-native-fast-image'
 export default class App extends Component {
 
   // componentDidMount(){
@@ -31,7 +31,7 @@ export default class App extends Component {
         renderItem={({item})=>{
           console.log(item.key)
           return(
-         <Image style={{height:100,width:100}} source={item.data} key={item.key}/>)
+         <FastImage style={{height:100,width:100}} source={item.data} key={item.key}/>)
       
       }}/>
       </View>
