@@ -9,9 +9,9 @@ import {
   View
 } from 'react-native';
 
+import FastImage from 'react-native-fast-image'
 import data from './src/data/data'
 // import {setWallpaper} from 'react-native-wallpaper-manager'
-import FastImage from 'react-native-fast-image'
 export default class App extends Component {
 
   // componentDidMount(){
@@ -21,17 +21,17 @@ export default class App extends Component {
   
 
   render() {
-    console.log(data.slice(0,10))
+    console.log(data.slice(0,5))
     return (
       
       <View style={styles.container}>
         <FlatList 
+        numColumns={2}
         data={data.slice(0,10)}
-       
         renderItem={({item})=>{
           console.log(item.key)
           return(
-         <FastImage style={{height:100,width:100}} source={item.data} key={item.key}/>)
+         <FastImage style={{height:250,width:150}} source={item.data} key={item.key}/>)
       
       }}/>
       </View>
@@ -59,4 +59,5 @@ const styles = StyleSheet.create({
     color: '#333333',
     marginBottom: 5,
   },
+ 
 });
