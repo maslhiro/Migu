@@ -24,6 +24,25 @@ class HomeScreen extends Component {
 
  };
 
+ constructor(props){
+   super(props);
+   this.state={
+     data:data.slice(0,10),
+     isRefeshing: false
+    }
+ }
+
+ onRefresh(){
+    this.setState({
+      isRefeshing: true
+    })
+
+    this.setState({
+      data:reviceData(10),
+      isRefeshing: false
+    })
+ }
+
  openInfoScreen(item){
   this.props.navigation.navigate("Info",
   {
@@ -32,14 +51,15 @@ class HomeScreen extends Component {
  }
 
   render() {
-
+    console.log(reviceData(10))
     return (
       
       <View style={styles.container}>
         <FlatList 
+        refreshing={this.state.isRefeshing}
         numColumns={2}
-        data={data.slice(0,10)}
-        
+        data={this.state.data}
+        onRefresh={()=>{this.onRefresh()}}
         renderItem={({item})=>{
           // console.log(item.key)
           return(
@@ -54,6 +74,19 @@ class HomeScreen extends Component {
    
     );
   }
+}
+
+function reviceData(num){
+  let arr =  Array.from({length: num}, () => Math.floor(Math.random() * data.length));
+  let arrReturn = [] 
+  arr.map((item)=>{
+    arrReturn.push({
+      key:item,
+      data:data[item].data
+    })
+  })
+
+  return arrReturn  
 }
 
 const styles = StyleSheet.create({
