@@ -563,30 +563,7 @@ export default [
            "key": "141",
            "data":require('../../assets/img/141.jpg')
         },
-        {
-           "key": "142",
-           "data":require('../../assets/img/142.jpg')
-        },
-        {
-           "key": "143",
-           "data":require('../../assets/img/143.jpg')
-        },
-        {
-           "key": "144",
-           "data":require('../../assets/img/144.jpg')
-        },
-        {
-           "key": "145",
-           "data":require('../../assets/img/145.jpg')
-        },
-        {
-           "key": "146",
-           "data":require('../../assets/img/146.jpg')
-        },
-        {
-           "key": "147",
-           "data":require('../../assets/img/147.jpg')
-        }
+
     ]
    
     

@@ -7,7 +7,8 @@ import {
   View,
   TouchableOpacity
 } from 'react-native';
-
+import PropTypes from 'prop-types'
+import { withNavigationFocus } from 'react-navigation-is-focused-hoc'
 import FastImage from 'react-native-fast-image'
 import data from '../../data/data'
 import ic_Home from '../../../assets/logo/ic_Home.png'
@@ -22,7 +23,40 @@ class HomeScreen extends Component {
     header: null,
     tabBarIcon : <Image source={ic_Home} style={{width:25,height:25}}/>
 
- };
+  };
+  static propTypes = {
+    isFocused: PropTypes.bool.isRequired,
+ 
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (!this.props.isFocused && nextProps.isFocused) {
+      // screen enter (refresh data, update ui ...)
+    }
+    if (this.props.isFocused && !nextProps.isFocused) {
+      // screen exit
+    }
+  }
+
+  shouldComponentUpdate(nextProps,nextState) {
+    // console.log("This "+this.props.isFocused)
+    // console.log("Next "+nextProps.isFocused)
+    // console.log(this.props.isFocused && nextProps.isFocused)
+    
+    // Update only once after the screen disappears
+    if (this.props.isFocused && !nextProps.isFocused) {
+      return true
+    }
+
+    // Don't update if the screen is not focused
+    if (!this.props.isFocused && !nextProps.isFocused) {
+      return false
+    }
+
+    // Update the screen if its re-enter
+    return this.props.isFocused && nextProps.isFocused
+  }
+
 
  constructor(props){
    super(props);
@@ -51,7 +85,7 @@ class HomeScreen extends Component {
  }
 
   render() {
-    console.log(reviceData(10))
+    console.log("Home "+this.props.isFocused)
     return (
       
       <View style={styles.container}>
@@ -80,9 +114,10 @@ function reviceData(num){
   let arr =  Array.from({length: num}, () => Math.floor(Math.random() * data.length));
   let arrReturn = [] 
   arr.map((item)=>{
+    if(item)
     arrReturn.push({
       key:item,
-      data:data[item].data
+      data:data[item-1].data
     })
   })
 
@@ -110,4 +145,4 @@ const styles = StyleSheet.create({
  
 });
 
-export default  HomeScreen 
+export default  withNavigationFocus(HomeScreen,true) 

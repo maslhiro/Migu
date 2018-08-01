@@ -11,6 +11,8 @@ import {
 } from 'react-native';
 
 import {createBottomTabNavigator,createStackNavigator} from 'react-navigation'
+import { updateFocus, getCurrentRouteKey } from 'react-navigation-is-focused-hoc'
+
 import HomeScreen from './src/screens/HomeScreen/index'
 import FavoritesScreen from './src/screens/FavoritesScreen/index'
 import InfoScreen from './src/screens/InfoScreen/index'
@@ -50,7 +52,10 @@ export default class App extends Component {
     return (
       <View style={{flex:1}}>
       <StatusBar hidden/>
-      <Stack/>
+      <Stack 
+        onNavigationStateChange={(prevState, currentState) => {
+               updateFocus(currentState)
+        }}/>
       </View>
     );
   }
