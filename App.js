@@ -3,61 +3,55 @@ import React, { Component } from 'react';
 import {
   FlatList,
   StyleSheet,
-  Image,
+  ImageBackground,
   Text,
   ScrollView,
-  View
+  View,
+  StatusBar
 } from 'react-native';
 
-import FastImage from 'react-native-fast-image'
-import data from './src/data/data'
-// import {setWallpaper} from 'react-native-wallpaper-manager'
+import {createBottomTabNavigator,createStackNavigator} from 'react-navigation'
+import HomeScreen from './src/screens/HomeScreen/index'
+import FavoritesScreen from './src/screens/FavoritesScreen/index'
+import InfoScreen from './src/screens/InfoScreen/index'
+
+
+console.disableYellowBox=true
+
+const BottomTab = createBottomTabNavigator({
+  Home:{
+    screen: HomeScreen
+  },
+  Favorites:{
+    screen:FavoritesScreen
+  },
+
+},{
+  initialRouteName:"Home"
+});
+
+const Stack = createStackNavigator({
+  BottomTab:{
+    screen:BottomTab
+  },
+  Info:{
+    screen:InfoScreen
+  }
+},{
+  headerMode:'none',
+  initialRouteName:"BottomTab"
+}
+)
+
 export default class App extends Component {
-
-  // componentDidMount(){
-  //   setWallpaper(icX, (res)=> console.log(res));
-  // }
-
   
-
   render() {
-    console.log(data.slice(0,5))
-    return (
-      
-      <View style={styles.container}>
-        <FlatList 
-        numColumns={2}
-        data={data.slice(0,10)}
-        renderItem={({item})=>{
-          console.log(item.key)
-          return(
-         <FastImage style={{height:250,width:150}} source={item.data} key={item.key}/>)
-      
-      }}/>
-      </View>
-
    
+    return (
+      <View style={{flex:1}}>
+      <StatusBar hidden/>
+      <Stack/>
+      </View>
     );
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-    padding: 5,
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
-  },
- 
-});
