@@ -61,9 +61,9 @@ class HomeScreen extends Component {
  constructor(props){
    super(props);
    this.state={
-     data:data.slice(0,10),
+     data:data,
      isRefeshing: false,
-     skip:20,
+  
     }
  }
 
@@ -75,9 +75,9 @@ class HomeScreen extends Component {
     })
 
     this.setState({
-      data:reviceData(10),
+      data:reviceData(data.length),
       isRefeshing: false,
-      skip:20
+     
     })
  }
 
@@ -105,7 +105,7 @@ class HomeScreen extends Component {
 
   render() {
     console.log("========================")
-    {uniqEs6(this.state.data).map(item=>console.log(item.key +"/"+ item.data))}
+    this.state.data.map(item=>console.log(item.key +"/"+ item.data))
     return (
       
       <View style={styles.container}>
@@ -119,27 +119,7 @@ class HomeScreen extends Component {
         onRefresh={()=>{this.onRefresh()}}
         renderItem={({item})=>this.renderItem(item)}
         bounces={false}
-        onEndReachedThreshold={0.01}
-        onEndReached={(info)=>{
-            if (!this.onEndReachedCalledDuringMomentum) {
-            if (!this.state.isRefeshing){
-                console.log("Distance : "+info.distanceFromEnd)
-                // if(this.state.skip<data.length)
-                this.onEndReachedCalledDuringMomentum = true;
-                this.setState({
-                  data: this.state.data.concat(reviceData_PullDow(this.state.skip)),
-                  isRefeshing: false,
-                  skip:this.state.skip+10,
-                
-                });
-               
-               
-            }
-          }
-        }
-        }
-        onMomentumScrollBegin={() => { this.onEndReachedCalledDuringMomentum = false; }}        
-        
+    
         />
 
 
@@ -151,33 +131,17 @@ class HomeScreen extends Component {
 }
 
 function reviceData(num){
-  let arr =  Array.from({length: num}, () => Math.floor(Math.random() * data.length));
-  let arrReturn = [] ;
-  arr.map((item)=>{
-    if(item)
-    arrReturn.push({
-      key:item,
-      data:data[item-1].data
-    })
-  })
+  // let arr =  Array.from({length: num}, () => Math.floor(Math.random() * data.length));
+  // let arrReturn = [] ;
+  // arr.map((item)=>{
+  //   if(item)
+  //   arrReturn.push({
+  //     key:item,
+  //     data:data[item-1].data
+  //   })
+  // })
 
-  return arrReturn  
-}
-
-function reviceData_PullDow(num){
-  let arrReturn = [] ;
-  data.slice(num-10,num).map((item)=>{
-    if(item.key)
-    arrReturn.push({
-      key:item.key,
-      data:item.data
-    })
-  })
-  return arrReturn
-}
-
-function uniqEs6(arrArg){
-  return [...(new Set(arrArg))]
+  return data.sort((a, b)=>{return (0.5 - Math.random())});  
 }
 
 const styles = StyleSheet.create({
