@@ -49,7 +49,7 @@ class FavoriteScreen extends Component {
     }
 
     // Update the screen if its re-enter
-    return !this.props.isFocused && nextProps.isFocused
+    return this.props.isFocused && nextProps.isFocused
   }
 
   render() {

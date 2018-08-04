@@ -62,18 +62,22 @@ class HomeScreen extends Component {
    super(props);
    this.state={
      data:data.slice(0,10),
-     isRefeshing: false
+     isRefeshing: false,
+     skip:20,
     }
  }
 
  onRefresh(){
     this.setState({
-      isRefeshing: true
+      isRefeshing: true,
+    
+     
     })
 
     this.setState({
       data:reviceData(10),
-      isRefeshing: false
+      isRefeshing: false,
+      skip:20
     })
  }
 
@@ -84,25 +88,61 @@ class HomeScreen extends Component {
   });
  }
 
+  renderItem = (item) => {
+    return (
+      <TouchableOpacity 
+      style={{flex:1,padding:5,alignItems:'center'}}
+      onPress={()=>this.openInfoScreen(item)}>
+       <FastImage 
+       style={{height:250,width:150}} 
+       source={item.data} 
+       key={item.key}
+       
+       resizeMethod="resize"/>  
+    </TouchableOpacity>
+    );
+  }
+
   render() {
-    console.log("Home "+this.props.isFocused)
+    console.log("========================")
+    {uniqEs6(this.state.data).map(item=>console.log(item.key +"/"+ item.data))}
     return (
       
       <View style={styles.container}>
         <FlatList 
+        removeClippedSubviews 
+        disableVirtualization
+        keyExtractor={item => item.key} 
         refreshing={this.state.isRefeshing}
         numColumns={2}
         data={this.state.data}
         onRefresh={()=>{this.onRefresh()}}
-        renderItem={({item})=>{
-          // console.log(item.key)
-          return(
-            <TouchableOpacity 
-              style={{flex:1,padding:5,alignItems:'center'}}
-              onPress={()=>this.openInfoScreen(item)}>
-               <FastImage style={{height:250,width:150}} source={item.data} key={item.key}/>  
-            </TouchableOpacity>
-      )}}/>
+        renderItem={({item})=>this.renderItem(item)}
+        bounces={false}
+        onEndReachedThreshold={0.01}
+        onEndReached={(info)=>{
+            if (!this.onEndReachedCalledDuringMomentum) {
+            if (!this.state.isRefeshing){
+                console.log("Distance : "+info.distanceFromEnd)
+                // if(this.state.skip<data.length)
+                this.onEndReachedCalledDuringMomentum = true;
+                this.setState({
+                  data: this.state.data.concat(reviceData_PullDow(this.state.skip)),
+                  isRefeshing: false,
+                  skip:this.state.skip+10,
+                
+                });
+               
+               
+            }
+          }
+        }
+        }
+        onMomentumScrollBegin={() => { this.onEndReachedCalledDuringMomentum = false; }}        
+        
+        />
+
+
       </View>
 
    
@@ -112,7 +152,7 @@ class HomeScreen extends Component {
 
 function reviceData(num){
   let arr =  Array.from({length: num}, () => Math.floor(Math.random() * data.length));
-  let arrReturn = [] 
+  let arrReturn = [] ;
   arr.map((item)=>{
     if(item)
     arrReturn.push({
@@ -122,6 +162,22 @@ function reviceData(num){
   })
 
   return arrReturn  
+}
+
+function reviceData_PullDow(num){
+  let arrReturn = [] ;
+  data.slice(num-10,num).map((item)=>{
+    if(item.key)
+    arrReturn.push({
+      key:item.key,
+      data:item.data
+    })
+  })
+  return arrReturn
+}
+
+function uniqEs6(arrArg){
+  return [...(new Set(arrArg))]
 }
 
 const styles = StyleSheet.create({

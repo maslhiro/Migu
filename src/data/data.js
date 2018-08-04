@@ -547,24 +547,7 @@ export default [
            "key": "137",
            "data":require('../../assets/img/137.jpg')
         },
-        {
-           "key": "138",
-           "data":require('../../assets/img/138.jpg')
-        },
-        {
-           "key": "139",
-           "data":require('../../assets/img/139.jpg')
-        },
-        {
-           "key": "140",
-           "data":require('../../assets/img/140.jpg')
-        },
-        {
-           "key": "141",
-           "data":require('../../assets/img/141.jpg')
-        },
-
-    ]
+]
    
     
   

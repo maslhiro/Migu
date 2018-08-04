@@ -46,7 +46,7 @@ class InfoScreen extends Component {
     }
 
     // Don't update if the screen is not focused
-    if (!this.props.isFocused && !nextProps.isFocused) {
+    if (this.props.isFocused && !nextProps.isFocused) {
       return false
     }
 
