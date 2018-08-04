@@ -1,5 +1,4 @@
 rootProject.name = 'Migu'
-
 include ':app'
 
 include ':react-native-wallpaper-manager'
