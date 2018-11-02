@@ -9,7 +9,7 @@ const BottomTab = createBottomTabNavigator({
   Home:{
     screen: HomeScreen
   },
-  Favorites:{
+  Favo:{
     screen:FavoritesScreen
   },
 

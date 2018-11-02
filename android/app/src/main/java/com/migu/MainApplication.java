@@ -1,10 +1,11 @@
 package com.migu;
 
 import android.app.Application;
-
 import com.facebook.react.ReactApplication;
+import com.clipsub.RNSweetAlert.RNSweetAlertPackage;
 import com.dylanvann.fastimage.FastImageViewPackage;
 import com.cunyutech.hollyliu.reactnative.wallpaper.WallPaperPackage;
+import com.react.rnspinkit.RNSpinkitPackage;        
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
@@ -25,9 +26,11 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+          new RNSweetAlertPackage(),
           new FastImageViewPackage(),
-          new WallPaperPackage()
-      );
+          new WallPaperPackage(),
+          new RNSpinkitPackage()  
+        );
     }
 
     @Override

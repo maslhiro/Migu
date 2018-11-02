@@ -1,89 +1,86 @@
-
 import React, { Component } from 'react';
 import {
   FlatList,
-  StyleSheet,
-  Image,
-  Text,
-  ScrollView,
-  View
+  View,
+  TouchableOpacity
 } from 'react-native';
-import PropTypes from 'prop-types'
-import { withNavigationFocus } from 'react-navigation-is-focused-hoc'
-import ic_Heart from '../../../assets/logo/ic_Heart.png'
-// import styles from './styles'
-// import {setWallpaper} from 'react-native-wallpaper-manager'
+import ic_Heart from '../../assets/logo/ic_Heart.png'
+import styles from './styles'
+
+import { createImageProgress } from 'react-native-image-progress';
+import FastImage from 'react-native-fast-image'
+import {showAlert_Warning,showAlert_Error,showAlert_Success} from '../../component/Alert'
+
+import ListImageContainer from '../../store'
+import { Subscribe } from 'unstated';
+const Image = createImageProgress(FastImage);
 
 class FavoriteScreen extends Component {
- 
+
   static navigationOptions = {
-    tabBarLabel : "Favorites",
-    title : 'Favorites',
+    tabBarLabel: "Favorites",
+    title: 'Favorites',
     header: null,
-    tabBarIcon : <Image source={ic_Heart} style={{width:25,height:25}}/>
+    tabBarIcon: <FastImage source={ic_Heart} style={{ width: 25, height: 25 }} />
 
   };
+
+  constructor() {
+    super();
+
+  }
+
   
-  static propTypes = {
-    isFocused: PropTypes.bool.isRequired,
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (!this.props.isFocused && nextProps.isFocused) {
-      // screen enter (refresh data, update ui ...)
+  openInfoScreen(listState, item) {
+    if (listState.setImg_Seclected({ isSelected: item.uri })) {
+      this.props.navigation.navigate("Info");
     }
-    if (this.props.isFocused && !nextProps.isFocused) {
-      // screen exit
+    else {
+     showAlert_Error()
     }
   }
 
-  shouldComponentUpdate(nextProps) {
-    // Update only once after the screen disappears
-    if (this.props.isFocused && !nextProps.isFocused) {
-      return true
-    }
+  renderItem = (listState, item) => {
+    return (
+      <TouchableOpacity
+        style={{ flex: 1, padding: 5, alignItems: 'center' }}
+        onPress={() => this.openInfoScreen(listState, item)}>
+        <Image
+          style={{ height: 250, width: 150 }}
+          source={{ uri: item.uri }}
+          key={item.uri}
+          resizeMethod="resize"
+        />
 
-    // Don't update if the screen is not focused
-    if (!this.props.isFocused && !nextProps.isFocused) {
-      return false
-    }
-
-    // Update the screen if its re-enter
-    return this.props.isFocused && nextProps.isFocused
+      </TouchableOpacity>
+    );
   }
+
 
   render() {
 
     return (
-      
       <View style={styles.container}>
-        <Text>FavoriteScreen</Text>
+        <Subscribe to={[ListImageContainer]}>
+          {listState =>
+            <View>
+              <FlatList
+                removeClippedSubviews={true}
+                disableVirtualization={true}
+                keyExtractor={item => item.uri}
+                numColumns={2}
+                data={listState.getList_State().listFavo}
+                renderItem={({ item }) => this.renderItem(listState, item)}
+                bounces={false}
+              />
+            </View>
+          }
+        </Subscribe>
+       
       </View>
 
-   
     );
   }
 }
 
-const  styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    // justifyContent: 'center',
-    // alignItems: 'center',
-    // backgroundColor: '#F5FCFF',
-    padding: 5,
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
-  },
- 
-})
-
-export default  withNavigationFocus(FavoriteScreen,true)
+export default FavoriteScreen
